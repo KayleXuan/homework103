@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * File Name          : main.c
-  * Date               : 10/03/2015 15:12:21
+  * Date               : 10/03/2015 21:14:03
   * Description        : Main program body
   ******************************************************************************
   *
@@ -69,6 +69,7 @@ void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* USER CODE END PFP */
+
 /* USER CODE BEGIN 0 */
 /* USER CODE END 0 */
 
@@ -123,8 +124,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-	
-	xTaskCreate( balance_bar, "balance bar", 1000, NULL,(configMAX_PRIORITIES-1), NULL ); 
+	xTaskCreate(balance_bar,"balance bar",100, NULL,2,NULL ); 
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */

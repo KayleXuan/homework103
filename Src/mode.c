@@ -36,14 +36,14 @@ void ModeInit(void)
 //	PIDInitStruct.Kd = 100;
 
 	//Config PIDBar
-	PIDInitStruct.Kp = 80;
+	PIDInitStruct.Kp = 20;
 	PIDInitStruct.Ki = 0;
-	PIDInitStruct.Kd = 0;
+	PIDInitStruct.Kd = 10;
 	PIDInitStruct.OutputMax = 1000;
 	PIDInitStruct.OutputMin = -1000;
 	PIDInitStruct.TargetValue = 255;
 	PID_Init(&PIDBar, &PIDInitStruct);
-	TIM2->CNT = 0;	
+	TIM2->CNT = 255;	
 	
 	
 	//Config PIDDir
