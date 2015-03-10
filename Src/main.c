@@ -56,6 +56,10 @@ UART_HandleTypeDef huart1;
 osThreadId defaultTaskHandle;
 
 /* USER CODE BEGIN PV */
+
+portBASE_TYPE taskstate;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,7 +128,9 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-	xTaskCreate(balance_bar,"balance bar",100, NULL,2,NULL ); 
+	taskstate = xTaskCreate(balance_bar,"balance bar",128, NULL,2,NULL ); 
+	if(taskstate != pdTRUE)
+		while(1);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
