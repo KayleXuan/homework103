@@ -1,0 +1,28 @@
+--cpu Cortex-M3
+"homework103 configuration\system_stm32f1xx.o"
+"homework103 configuration\startup_stm32f103xb.o"
+"homework103 configuration\stm32f1xx_hal_tim.o"
+"homework103 configuration\stm32f1xx_hal.o"
+"homework103 configuration\stm32f1xx_hal_tim_ex.o"
+"homework103 configuration\stm32f1xx_hal_gpio.o"
+"homework103 configuration\stm32f1xx_hal_uart.o"
+"homework103 configuration\stm32f1xx_hal_flash_ex.o"
+"homework103 configuration\stm32f1xx_hal_rcc.o"
+"homework103 configuration\stm32f1xx_hal_cortex.o"
+"homework103 configuration\stm32f1xx_hal_pwr.o"
+"homework103 configuration\stm32f1xx_hal_dma.o"
+"homework103 configuration\stm32f1xx_hal_gpio_ex.o"
+"homework103 configuration\stm32f1xx_hal_rcc_ex.o"
+"homework103 configuration\stm32f1xx_hal_flash.o"
+"homework103 configuration\stm32f1xx_it.o"
+"homework103 configuration\stm32f1xx_hal_msp.o"
+"homework103 configuration\main.o"
+"homework103 configuration\comdebugger.o"
+"homework103 configuration\motor.o"
+"homework103 configuration\pid.o"
+"homework103 configuration\mode.o"
+--library_type=microlib --strict --scatter "homework103 Configuration\homework103 Configuration.sct"
+
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "homework103 Configuration.map" -o "homework103 Configuration\homework103 Configuration.axf"
