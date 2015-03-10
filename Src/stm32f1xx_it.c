@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    stm32f1xx_it.c
-  * @date    09/03/2015 22:42:16
+  * @date    10/03/2015 15:12:21
   * @brief   Interrupt Service Routines.
   ******************************************************************************
   *
@@ -35,10 +35,13 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_it.h"
+#include "cmsis_os.h"
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 /* External variables --------------------------------------------------------*/
+ 
+extern void xPortSysTickHandler(void);
 
 /******************************************************************************/
 /*            Cortex-M3 Processor Interruption and Exception Handlers         */ 
@@ -53,8 +56,10 @@ void SysTick_Handler(void)
 	
 
   /* USER CODE END SysTick_IRQn 0 */
+  if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
+    xPortSysTickHandler();
+  }
   HAL_IncTick();
-  HAL_SYSTICK_IRQHandler();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */

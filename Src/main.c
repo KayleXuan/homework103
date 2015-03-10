@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * File Name          : main.c
-  * Date               : 09/03/2015 22:42:16
+  * Date               : 10/03/2015 15:12:21
   * Description        : Main program body
   ******************************************************************************
   *
@@ -34,6 +34,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1xx_hal.h"
+#include "cmsis_os.h"
 
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
@@ -41,6 +42,7 @@
 #include <Motor.h>
 #include <PID.h>
 #include <mode.h>
+#include <mytasks.h>
 
 /* USER CODE END Includes */
 
@@ -51,14 +53,9 @@ TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart1;
 
+osThreadId defaultTaskHandle;
+
 /* USER CODE BEGIN PV */
-
-FlagStatus Flag_StartProcessing;//为SET时即可进行下一次处理//在Systick满5次时
-
-#define DIVIDER 5 //5分频，则处理周期为5ms，即频率200Hz 
-
-uint8_t systickcount;//分频用
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,40 +65,17 @@ static void MX_TIM2_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_USART1_UART_Init(void);
+void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
-
-
 /* USER CODE END PFP */
-
 /* USER CODE BEGIN 0 */
-
-
-void HAL_SYSTICK_Callback(void)
-{
-	
-	if(systickcount >= DIVIDER)
-	{
-		Flag_StartProcessing = SET;
-		systickcount = 1;
-	}
-	else
-		systickcount++;
-}
-
-
-
-
 /* USER CODE END 0 */
 
 int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	
-
-
-
   /* USER CODE END 1 */
 
   /* MCU Configuration----------------------------------------------------------*/
@@ -120,19 +94,6 @@ int main(void)
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
-	
-	
-	
-	
-	
-	#define COMBUFFSIZE 100
-	char combuff[COMBUFFSIZE] = "";
-	int length;
-	int printfcount = 0;
-	
-
-
-
 	HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_1);
 	HAL_TIM_Encoder_Start(&htim2,TIM_CHANNEL_2);
 
@@ -141,37 +102,46 @@ int main(void)
 
 	HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_1);
 	HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_2);
-
-	ModeInit();
-	
   /* USER CODE END 2 */
+
+  /* USER CODE BEGIN RTOS_MUTEX */
+  /* add mutexes, ... */
+  /* USER CODE END RTOS_MUTEX */
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* add semaphores, ... */
+  /* USER CODE END RTOS_SEMAPHORES */
+
+  /* USER CODE BEGIN RTOS_TIMERS */
+  /* start timers, add new ones, ... */
+  /* USER CODE END RTOS_TIMERS */
+
+  /* Create the thread(s) */
+  /* definition and creation of defaultTask */
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  /* USER CODE BEGIN RTOS_THREADS */
+  /* add threads, ... */
+	
+	xTaskCreate( balance_bar, "balance bar", 1000, NULL,(configMAX_PRIORITIES-1), NULL ); 
+  /* USER CODE END RTOS_THREADS */
+
+  /* USER CODE BEGIN RTOS_QUEUES */
+  /* add queues, ... */
+  /* USER CODE END RTOS_QUEUES */
+ 
+
+  /* Start scheduler */
+  osKernelStart();
+  
+  /* We should never get here as control is now taken by the scheduler */
+  
 
   /* USER CODE BEGIN 3 */
   /* Infinite loop */
   while (1)
   {
-
-		while(Flag_StartProcessing == RESET);//等待期变为SET
-		Flag_StartProcessing = RESET;
-		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
-		
-		
-		
-		
-		
-		ExecuteMode(GetMode());
-
-		
-		
-		printfcount++;
-		if(printfcount>20)
-		{
-		printfcount = 0;
-		snprintf(combuff,COMBUFFSIZE,"Dir:%u\n",TIM2->CNT);
-		length = strlen(combuff);
-		HAL_UART_Transmit(&huart1,(uint8_t*)combuff,length,100);
-		}
-		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
   }
   /* USER CODE END 3 */
 
@@ -358,6 +328,23 @@ void MX_GPIO_Init(void)
 
 
 /* USER CODE END 4 */
+
+void StartDefaultTask(void const * argument)
+{
+
+  /* USER CODE BEGIN 5 */
+ 
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+
+  /* USER CODE END 5 */ 
+
+}
+ 
+ 
 
 #ifdef USE_FULL_ASSERT
 

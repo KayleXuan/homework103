@@ -25,3 +25,17 @@ homework103 configuration\stm32f1xx_it.o: ..\Drivers\STM32F1xx_HAL_Driver\Inc\st
 homework103 configuration\stm32f1xx_it.o: ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_tim_ex.h
 homework103 configuration\stm32f1xx_it.o: ..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_uart.h
 homework103 configuration\stm32f1xx_it.o: ..\Inc\stm32f1xx_it.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\CMSIS_RTOS\cmsis_os.h
+homework103 configuration\stm32f1xx_it.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+homework103 configuration\stm32f1xx_it.o: ..\Inc\FreeRTOSConfig.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM3\portmacro.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\queue.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\semphr.h
+homework103 configuration\stm32f1xx_it.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\event_groups.h
