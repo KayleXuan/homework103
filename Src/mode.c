@@ -18,7 +18,7 @@
 #include <mode.h>
 
 
-
+uint16_t cntfort4;
 
 PIDStructTypeDef PIDBar;//摆杆PID
 PIDStructTypeDef PIDDir;//方向角PID（防止杆旋转太多）
@@ -27,32 +27,18 @@ PIDInitStructTypeDef PIDInitStruct;//初始化变量
 
 void ModeInit(void)
 {
-//	PIDInitStruct.Kp = 0;
-//	PIDInitStruct.Ki = 0;
-//	PIDInitStruct.Kd = 0;
-
-//	PIDInitStruct.Kp = 60;
-//	PIDInitStruct.Ki = 0;
-//	PIDInitStruct.Kd = 100;
-
 	//Config PIDBar
 	PIDInitStruct.Kp = 20;
 	PIDInitStruct.Ki = 0;
 	PIDInitStruct.Kd = 10;
-	PIDInitStruct.OutputMax = 1000;
-	PIDInitStruct.OutputMin = -1000;
 	PIDInitStruct.TargetValue = 255;
 	PID_Init(&PIDBar, &PIDInitStruct);
 	TIM2->CNT = 255;	
-	
-	
+
 	//Config PIDDir
-//	PIDInitStruct.Kp = 0.01;
-	PIDInitStruct.Kp = 0.00;
+	PIDInitStruct.Kp = 0.1;
 	PIDInitStruct.Ki = 0;
 	PIDInitStruct.Kd = 0;
-	PIDInitStruct.OutputMax = 1000;
-	PIDInitStruct.OutputMin = -1000;
 	PIDInitStruct.TargetValue = 0xffff/2;
 	PID_Init(&PIDDir, &PIDInitStruct);
 	TIM4->CNT = 0xffff/2;
@@ -125,7 +111,8 @@ void mode2(void)
 {
 	PID_Cal(&PIDBar,TIM2->CNT);
 	PID_Cal(&PIDDir,TIM4->CNT);
-	SetPWM(PIDBar.OutputValue + PIDDir.OutputValue);
+	cntfort4 = TIM4->CNT;
+	SetPWM(PIDDir.OutputValue);
 }
 ///////////////////////////////////////////////END MODE 2222222222/////////////////////////////
 
@@ -144,9 +131,9 @@ void mode3(void)
 		if((TIM2->CNT<206)||(TIM2->CNT>306))//在PID范围之外
 		{
 			twickcount++;
-			if(twickcount >= 100)
+			if(twickcount >= 20)
 				twickcount = 0;
-			if(twickcount<50)
+			if(twickcount<10)
 				SetPWM(-400);
 			else
 				SetPWM(400);

@@ -2,24 +2,30 @@
   ******************************************************************************
   * @file    PID.h
   * @author  Kayle Xuan
-  * @version V1.0.0
-  * @date    8/3/2015
   * @brief   位置式PID算法实现
   ******************************************************************************
   * @attention
 	*
-  *	none
+  *	Never Change OutputValue in PIDStructTypeDef!!!!!!!!!!!!!!
+	* Please Limit Output Outside PID_Cal() if necessary
 	*
   *
   ******************************************************************************
 	* @HowToUse
-	*	1:配置使用Kp,T,Ti,Td还是使用Kp,Ki,Kd参数,如使用Kp,T,Ti,Td参数，在PID.C取消注释
-	*		#define USE_Traditional_PID。
-	*	2:声明PIDInitStructTypeDef结构体并进行配置。
-	*	3:声明PIDStructTypeDef结构体。
-	* 4:用PID_Init函数初始化PID变量。
-	*	5:loop:用PID_Cal()计算。
+	*	1:声明PIDInitStructTypeDef结构体并进行配置。
+	*	2:声明PIDStructTypeDef结构体。
+	* 3:用PID_Init函数初始化PID变量。
+	*	4:loop:用PID_Cal()计算。
 	******************************************************************************
+	*	@original
+	*	@version V1.0
+  * @date    8/3/2015
+	*
+	*	@update
+	*	@version V1.1
+  * @date    11/3/2015
+	*	@info 1:修复了输出限幅会导致静态误差的Bug
+	*				2:取消了少见的USE_Traditional_PID的宏定义
 	*/ 
 
 
@@ -75,21 +81,9 @@
 typedef struct
 {
 	int16_t TargetValue;		
-
-#ifdef USE_Traditional_PID
-	double Kp;		//P系数
-	double T;     //处理周期T
-	double Ti;		//Ti系数
-	double Td;		//Td系数
-#else
 	double Kp;		//P系数
 	double Ki;		//I系数
 	double Kd;		//D系数
-#endif
-//输出值限幅
-	int16_t OutputMax;
-	int16_t OutputMin;
-	
 } PIDInitStructTypeDef;
 
 
@@ -111,12 +105,8 @@ typedef struct
 	double B;		//B系数
 	double C;		//C系数
 	
-	//输出值限幅
-	int16_t OutputMax;
-	int16_t OutputMin;
 	
-	
-//SpeedPID_Cal函数计算出的量
+//SpeedPID_Cal函数计算出的量(绝对不要手动改变它们!!!)
 	double Ea;	//本次误差
 	double Eb;	//上次误差
 	double Ec;	//上上次误差	

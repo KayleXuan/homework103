@@ -2,30 +2,31 @@
   ******************************************************************************
   * @file    PID.h
   * @author  Kayle Xuan
-  * @version V1.0.0
-  * @date    8/3/2015
   * @brief   位置式PID算法实现
   ******************************************************************************
   * @attention
 	*
-  *	none
+  *	Never Change OutputValue in PIDStructTypeDef!!!!!!!!!!!!!!
+	* Please Limit Output Outside PID_Cal() if necessary
 	*
   *
   ******************************************************************************
 	* @HowToUse
-	*	1:选择使用Kp,T,Ti,Td还是使用Kp,Ki,Kd参数,如使用Kp,T,Ti,Td参数，在PID.C取消注释
-	*		#define USE_Traditional_PID。
-	*	2:声明PIDStructInitTypeDef结构体并进行配置。
-	*	3:声明PIDStructInitTypeDef结构体。
-	* 4:用PID_Init函数初始化PID变量。
-	*	5:loop:用PID_Cal()计算。
+	*	1:声明PIDInitStructTypeDef结构体并进行配置。
+	*	2:声明PIDStructTypeDef结构体。
+	* 3:用PID_Init函数初始化PID变量。
+	*	4:loop:用PID_Cal()计算。
 	******************************************************************************
-  */ 
-
-
-//#define USE_Traditional_PID
-
-
+	*	@original
+	*	@version V1.0
+  * @date    8/3/2015
+	*
+	*	@update
+	*	@version V1.1
+  * @date    11/3/2015
+	*	@info 1:修复了输出限幅会导致静态误差的Bug
+	*				2:取消了少见的USE_Traditional_PID的宏定义
+	*/ 
 
 
 
@@ -39,30 +40,19 @@
 
 void PID_Init(PIDStructTypeDef* PIDStruct, PIDInitStructTypeDef* PIDInitStruct)
 {
-	#ifdef USE_Traditional_PID
-	//A = Kp*(1+T/Ti+Td/Ti)
-	//B = Kp(1+2*Td/T)
-	//C = Kp*Td/T
-	PIDStruct->A = PIDInitStruct->Kp*(1+PIDInitStruct->T/PIDInitStruct->Ti+PIDInitStruct->Td/PIDInitStruct->T);
-	PIDStruct->B = PIDInitStruct->Kp*(1+2*PIDInitStruct->Td/PIDInitStruct->T);
-	PIDStruct->C = PIDInitStruct->Kp*PIDInitStruct->Td/PIDInitStruct->T;
-	#else
 	//A = Kp+Ki+Kd
 	//B = Kp+2Kd
 	//C = Kd
 	PIDStruct->A = PIDInitStruct->Kp + PIDInitStruct->Ki + PIDInitStruct->Kd;
 	PIDStruct->B = PIDInitStruct->Kp + 2*PIDInitStruct->Kd;
 	PIDStruct->C = PIDInitStruct->Kd;
-	#endif
-	
+
 	PIDStruct->Ea = 0;
 	PIDStruct->Eb = 0;
 	PIDStruct->Ec = 0;
 	PIDStruct->TargetValue = PIDInitStruct->TargetValue;
 	PIDStruct->PresentValue = PIDInitStruct->TargetValue;
 	PIDStruct->OutputValue = 0;
-	PIDStruct->OutputMax = PIDInitStruct->OutputMax;
-	PIDStruct->OutputMin = PIDInitStruct->OutputMin;
 }
 
 
@@ -79,10 +69,5 @@ void PID_Cal(PIDStructTypeDef* PIDStruct, double NewValueInput)
 	PIDStruct->Eb = PIDStruct->Ea;
 	
   PIDStruct->OutputValue += adj;        //调整输出
- 
-  if(PIDStruct->OutputValue > PIDStruct->OutputMax) 
-		PIDStruct->OutputValue = PIDStruct->OutputMax;    //输出值限幅
-  if(PIDStruct->OutputValue < PIDStruct->OutputMin) 
-		PIDStruct->OutputValue = PIDStruct->OutputMin;    //输出值限幅
 }
 
