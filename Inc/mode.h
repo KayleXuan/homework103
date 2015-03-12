@@ -33,7 +33,7 @@ void ExecuteMode(uint8_t mode);
 void SwayUp(void);
 
 
-
+extern int32_t TIM4CNT;
 
 
 

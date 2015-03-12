@@ -77,7 +77,7 @@ void PID_Cal(PIDStructTypeDef* PIDStruct, double NewValueInput)
 	PIDStruct->OutputValue = PIDStruct->Output4p + PIDStruct->Output4i + PIDStruct->Output4d;
 	if(PIDStruct->OutputValue > PIDStruct->OutputMax)
 		PIDStruct->OutputValue = PIDStruct->OutputMax;
-	if(PIDStruct->OutputValue < PIDStruct->OutputMin)
+	else if(PIDStruct->OutputValue < PIDStruct->OutputMin)
 		PIDStruct->OutputValue = PIDStruct->OutputMin;
 	
 	

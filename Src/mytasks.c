@@ -31,8 +31,8 @@ void balance_bar(void *pvParameters)
 
 
 
-	//if//////////////////////////////////////////
-	SwayUp();/////////////////////////////////////////////////
+	if((mode != 0)&&(mode != 1)&&(mode != 5))
+		SwayUp();
 
 
 
@@ -48,12 +48,13 @@ void balance_bar(void *pvParameters)
 
 
 	//Config PIDDir
-	PID_Init(&PIDDir, 0xffff/2, 0, 0, 0.002, 5, -5);
+	PID_Init(&PIDDir, 0, 0, 0, 0.002, 5, -5);
 //	PIDInitStruct.Kp = 0;
 //	PIDInitStruct.Ki = 0;
 //	PIDInitStruct.Kd = 0.002;
 //	PIDInitStruct.TargetValue = 0xffff/2;
 //	PID_Init(&PIDDir, &PIDInitStruct);
+	TIM4CNT = 0;
 	TIM4->CNT = 0xffff/2;
 	
 	
@@ -61,16 +62,20 @@ void balance_bar(void *pvParameters)
 	{
 		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
 		
+		
 		if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12))
 		{
 			SetPWM(0);
+			HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
 			while(1);
 		}
+		
 
 		mode = 3;
 		ExecuteMode(mode);
 		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
-		vTaskDelayUntil(&xLastWakeTime, 5/ portTICK_RATE_MS);
+//		vTaskDelayUntil(&xLastWakeTime, 5/ portTICK_RATE_MS);
+		vTaskDelayUntil(&xLastWakeTime, 2/ portTICK_RATE_MS);
 	}
 }
 

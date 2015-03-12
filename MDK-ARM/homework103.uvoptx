@@ -214,22 +214,6 @@
           <ExecCommand></ExecCommand>
           <Expression>\\homework103_Configuration\../Middlewares/Third_Party/FreeRTOS/Source/tasks.c\2590</Expression>
         </Bp>
-        <Bp>
-          <Number>1</Number>
-          <Type>0</Type>
-          <LineNumber>37</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134228224</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\Src\mytasks.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\homework103_Configuration\../Src/mytasks.c\37</Expression>
-        </Bp>
       </Breakpoint>
       <Tracepoint>
         <THDelay>0</THDelay>

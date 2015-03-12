@@ -23,13 +23,15 @@
 PIDStructTypeDef PIDBar;//摆杆PID
 PIDStructTypeDef PIDDir;//方向角PID（防止杆旋转太多）
 
-
+int32_t TIM4CNT;
 
 
 
 //摆动杆子，使其达到0位置
 void SwayUp(void)
 {
+	if((TIM2->CNT<512*45/360) ||	(TIM2->CNT<512*315/360))
+		return;//起始角度太大，直接跳出
 	SetPWM(-1000);
 	while(TIM2->CNT <= (512*15/360))//等待到达45°位置
 		PIDBar.PresentValue = TIM2->CNT;
@@ -112,9 +114,6 @@ void mode1(void)
 //						启动控制旋转臂使摆杆保持倒立状态时间不少于5s；期间旋转臂的转动角度不大于90°。 
 void mode2(void)
 {
-//	PID_Cal(&PIDBar,TIM2->CNT);
-//	PID_Cal(&PIDDir,TIM4->CNT);
-//	SetPWM(PIDDir.OutputValue);
 }
 ///////////////////////////////////////////////END MODE 2222222222/////////////////////////////
 
@@ -130,7 +129,20 @@ void mode2(void)
 double tarvforPIDBar;
 void mode3(void)
 {
-//	PID_Cal(&PIDDir,TIM4->CNT);
+	int32_t temp;
+	
+	if((TIM2->CNT > (256+128)) || (TIM2->CNT < (256-128)))//不可控
+	{
+		SetPWM(0);
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+		while(1);
+	}
+	
+		
+		temp = TIM4->CNT;
+		TIM4->CNT = 0xffff/2;
+		TIM4CNT += temp-0xffff/2;
+	PID_Cal(&PIDDir,TIM4CNT);
 	
 //	tarvforPIDBar = PIDBar.TargetValue;
 //	PIDBar.TargetValue += PIDDir.OutputValue;///////////////////////////////
@@ -151,6 +163,7 @@ void mode3(void)
 //(mode4)（2）在摆杆保持倒立状态下，施加干扰后摆杆能继续保持倒立或2s内恢复 倒立状态； 
 void mode4(void)
 {
+	mode3();
 }
 //////////////////////////////////////////////END MODE 44444444444444/////////////////////////////
 
@@ -163,6 +176,8 @@ void mode4(void)
 //(mode5)（3）在摆杆保持倒立状态的前提下，旋转臂作圆周运动，并尽快使单方向 转过角度达到或超过360°； 
 void mode5(void)
 {
+	TIM4->CNT --;
+	mode3();
 }
 /////////////////////////////////////////////END MODE 555555555555555/////////////////////////////
 
@@ -176,7 +191,6 @@ void mode5(void)
 //(mode6)（4）其他。
 void mode6(void)
 {
-	modedefault();
 }
 /////////////////////////////////////////////END MODE 6666666666666666/////////////////////////////
 
@@ -192,6 +206,8 @@ void mode6(void)
 void modedefault(void)
 {
 	SetPWM(0);
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+	while(1);
 }
 /////////////////////////////////////////////END MODE default//////////////////////////////////////
 
