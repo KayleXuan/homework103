@@ -3,12 +3,6 @@
 
 
 
-
-
-
-PIDInitStructTypeDef PIDInitStruct;//初始化变量
-
-
 void balance_bar(void *pvParameters)
 {
 	
@@ -26,13 +20,17 @@ void balance_bar(void *pvParameters)
 	
 	
 	//Config PIDBar
-	PIDInitStruct.Kp = 35;
-	PIDInitStruct.Ki = 0.00;
-	PIDInitStruct.Kd = 43;
-	PIDInitStruct.TargetValue = 256;
-	PID_Init(&PIDBar, &PIDInitStruct);
+	PID_Init(&PIDBar, 256, 35, 0, 43, 1000, -1000);
+//	PIDInitStruct.Kp = 35;
+//	PIDInitStruct.Ki = 0.00;
+//	PIDInitStruct.Kd = 43;
+//	PIDInitStruct.TargetValue = 256;
+//	PID_Init(&PIDBar, &PIDInitStruct);
 	TIM2->CNT = 0;
 //TIM2->CNT = 255;
+
+
+
 	//if//////////////////////////////////////////
 	SwayUp();/////////////////////////////////////////////////
 
@@ -50,11 +48,12 @@ void balance_bar(void *pvParameters)
 
 
 	//Config PIDDir
-	PIDInitStruct.Kp = 0;
-	PIDInitStruct.Ki = 0;
-	PIDInitStruct.Kd = 0.002;
-	PIDInitStruct.TargetValue = 0xffff/2;
-	PID_Init(&PIDDir, &PIDInitStruct);
+	PID_Init(&PIDDir, 0xffff/2, 0, 0, 0.002, 5, -5);
+//	PIDInitStruct.Kp = 0;
+//	PIDInitStruct.Ki = 0;
+//	PIDInitStruct.Kd = 0.002;
+//	PIDInitStruct.TargetValue = 0xffff/2;
+//	PID_Init(&PIDDir, &PIDInitStruct);
 	TIM4->CNT = 0xffff/2;
 	
 	

@@ -126,14 +126,18 @@ void mode2(void)
 
 
 /////////////////////////////////////////////////MODE 33333333333333/////////////////////////////
-//(mode3)（1）从摆杆处于自然下垂状态开始，控制旋转臂作往复旋转运动，尽快使摆杆摆起倒立，保持倒立状态时间不少于10s； 
+//(mode3)（1）从摆杆处于自然下垂状态开始，控制旋转臂作往复旋转运动，尽快使摆杆摆起倒立，保持倒立状态时间不少于10s；
+double tarvforPIDBar;
 void mode3(void)
 {
-	PID_Cal(&PIDDir,TIM4->CNT);
+//	PID_Cal(&PIDDir,TIM4->CNT);
 	
+//	tarvforPIDBar = PIDBar.TargetValue;
 //	PIDBar.TargetValue += PIDDir.OutputValue;///////////////////////////////
 	
 	PID_Cal(&PIDBar,TIM2->CNT);
+	
+//	PIDBar.TargetValue = tarvforPIDBar;
 	SetPWM(PIDBar.OutputValue);
 }
 //////////////////////////////////////////////END MODE 33333333333333/////////////////////////////
