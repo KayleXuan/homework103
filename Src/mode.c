@@ -18,40 +18,43 @@
 #include <mode.h>
 
 
-uint16_t cntfort4;
+
 
 PIDStructTypeDef PIDBar;//摆杆PID
 PIDStructTypeDef PIDDir;//方向角PID（防止杆旋转太多）
-PIDInitStructTypeDef PIDInitStruct;//初始化变量
 
 
-void ModeInit(void)
+
+
+
+//摆动杆子，使其达到0位置
+void SwayUp(void)
 {
-	//Config PIDBar
-	PIDInitStruct.Kp = 20;
-	PIDInitStruct.Ki = 0;
-	PIDInitStruct.Kd = 10;
-	PIDInitStruct.TargetValue = 255;
-	PID_Init(&PIDBar, &PIDInitStruct);
-	TIM2->CNT = 255;	
-
-	//Config PIDDir
-	PIDInitStruct.Kp = 0.1;
-	PIDInitStruct.Ki = 0;
-	PIDInitStruct.Kd = 0;
-	PIDInitStruct.TargetValue = 0xffff/2;
-	PID_Init(&PIDDir, &PIDInitStruct);
-	TIM4->CNT = 0xffff/2;
-	
+	SetPWM(1000);
+	while(TIM2->CNT <= (512*45/360))//等待到达45°位置
+		;
+	SetPWM(100);
+	while(TIM2->CNT <= (512*120/360))//等待杆子甩上来
+		;
+	SetPWM(-1000);
+	while(TIM2->CNT <= (512*165/360))
+		;
+	//杆子已竖直
 }
+
+
+
+
+
+
+
+
 
 
 uint8_t GetMode(void)
 {
 	uint8_t mode;
-	mode = (GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12));
-	mode <<=1;
-	mode += (GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15));
+	mode = (GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_15));
 	mode <<=1;
 	mode += (GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_14));
 	mode <<=1;
@@ -74,7 +77,7 @@ void ExecuteMode(uint8_t mode)
 		case 5:		mode5(); break;
 		case 6:		mode6(); break;
 		default:	modedefault(); break;
-	}	
+	}
 }
 
 
@@ -109,10 +112,9 @@ void mode1(void)
 //						启动控制旋转臂使摆杆保持倒立状态时间不少于5s；期间旋转臂的转动角度不大于90°。 
 void mode2(void)
 {
-	PID_Cal(&PIDBar,TIM2->CNT);
-	PID_Cal(&PIDDir,TIM4->CNT);
-	cntfort4 = TIM4->CNT;
-	SetPWM(PIDDir.OutputValue);
+//	PID_Cal(&PIDBar,TIM2->CNT);
+//	PID_Cal(&PIDDir,TIM4->CNT);
+//	SetPWM(PIDDir.OutputValue);
 }
 ///////////////////////////////////////////////END MODE 2222222222/////////////////////////////
 
@@ -125,24 +127,14 @@ void mode2(void)
 
 /////////////////////////////////////////////////MODE 33333333333333/////////////////////////////
 //(mode3)（1）从摆杆处于自然下垂状态开始，控制旋转臂作往复旋转运动，尽快使摆杆摆起倒立，保持倒立状态时间不少于10s； 
-int twickcount = 0;
 void mode3(void)
 {
-		if((TIM2->CNT<206)||(TIM2->CNT>306))//在PID范围之外
-		{
-			twickcount++;
-			if(twickcount >= 20)
-				twickcount = 0;
-			if(twickcount<10)
-				SetPWM(-400);
-			else
-				SetPWM(400);
-		}
-		else
-		{
-			PID_Cal(&PIDBar,TIM2->CNT);
-			SetPWM(PIDBar.OutputValue);
-		}
+	PID_Cal(&PIDDir,TIM4->CNT);
+	
+	PIDBar.TargetValue += PIDDir.OutputValue;///////////////////////////////
+	
+	PID_Cal(&PIDBar,TIM2->CNT);
+	SetPWM(PIDBar.OutputValue);
 }
 //////////////////////////////////////////////END MODE 33333333333333/////////////////////////////
 

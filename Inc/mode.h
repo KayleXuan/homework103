@@ -23,13 +23,14 @@
 #include <PID.h>
 #include <Motor.h>
 
-void ModeInit(void);
+extern PIDStructTypeDef PIDBar;//°Ú¸ËPID
+extern PIDStructTypeDef PIDDir;//·½Ïò½ÇPID£¨·ÀÖ¹¸ËÐý×ªÌ«¶à£©
 
 uint8_t GetMode(void);
 void ExecuteMode(uint8_t mode);
 
 
-
+void SwayUp(void);
 
 
 

@@ -7,7 +7,7 @@
 	
 	
 //设定电机转速，dutycycle范围为 -999到999
-void SetPWM(int16_t);
+void SetPWM(double);
 	
 	
 

@@ -8,7 +8,7 @@
 
 #define PWM_MAX 1000
 //设定电机转速，dutycycle范围为 -999到999
-void SetPWM(int16_t dutycycle)
+void SetPWM(double dutycycle)
 {
 	if(dutycycle < 0)
 	{
