@@ -30,14 +30,14 @@ PIDStructTypeDef PIDDir;//方向角PID（防止杆旋转太多）
 //摆动杆子，使其达到0位置
 void SwayUp(void)
 {
-	SetPWM(1000);
-	while(TIM2->CNT <= (512*45/360))//等待到达45°位置
-		;
-	SetPWM(100);
-	while(TIM2->CNT <= (512*120/360))//等待杆子甩上来
-		;
 	SetPWM(-1000);
-	while(TIM2->CNT <= (512*165/360))
+	while(TIM2->CNT <= (512*15/360))//等待到达45°位置
+		PIDBar.PresentValue = TIM2->CNT;
+	SetPWM(0);
+	while(TIM2->CNT <= (512*160/360))//等待杆子甩上来
+		PIDBar.PresentValue = TIM2->CNT;
+//	SetPWM(+1000);
+//	while(TIM2->CNT <= (512*120/360))
 		;
 	//杆子已竖直
 }
@@ -131,7 +131,7 @@ void mode3(void)
 {
 	PID_Cal(&PIDDir,TIM4->CNT);
 	
-	PIDBar.TargetValue += PIDDir.OutputValue;///////////////////////////////
+//	PIDBar.TargetValue += PIDDir.OutputValue;///////////////////////////////
 	
 	PID_Cal(&PIDBar,TIM2->CNT);
 	SetPWM(PIDBar.OutputValue);
