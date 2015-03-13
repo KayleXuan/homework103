@@ -21,8 +21,10 @@ void balance_bar(void *pvParameters)
 	
 	
 	//Config PIDBar
-//	PID_Init(&PIDBar, 256, 35, 0, 43, 1000, -1000);
-	PID_Init(&PIDBar, 256, 9, 1, 72, 1000, -1000);
+//PID_Init(&PIDBar, 256, 10, 1, 80, 1000, -1000);
+	
+	
+	PID_Init(&PIDBar, 256, 10, 1, 80, 1000, -1000);
 	tarvforPIDBar = 256;
 	
 	
@@ -55,8 +57,9 @@ void balance_bar(void *pvParameters)
 
 
 	//Config PIDDir
-//	PID_Init(&PIDDir, 0, 0, 0, 0.002, 5, -5);
-	PID_Init(&PIDDir,  0, 0.002, 0, 0.02, 10, -10);
+//	PID_Init(&PIDDir,  0, 0.002, 0, 0.02, 10, -10);
+	PID_Init(&PIDDir,  0, 0.001, 0, 0.01, 10, -10);
+	
 	TIM4CNT = 0;
 	TIM4->CNT = 0xffff/2;
 	
