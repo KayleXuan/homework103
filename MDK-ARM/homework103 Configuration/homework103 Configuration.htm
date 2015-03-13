@@ -3,7 +3,7 @@
 <title>Static Call Graph - [homework103 Configuration\homework103 Configuration.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image homework103 Configuration\homework103 Configuration.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Fri Mar 13 16:25:33 2015
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5050106: Last Updated: Fri Mar 13 19:04:09 2015
 <BR><P>
 <H3>Maximum Stack Usage =        216 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -781,6 +781,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;modedefault
 <LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mode3
+<LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mode0
 <LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SwayUp
 </UL>
 
@@ -847,7 +848,7 @@ Global Symbols
 
 <P><STRONG><a name="[ce]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
-<P><STRONG><a name="[38]"></a>balance_bar</STRONG> (Thumb, 212 bytes, Stack size 48 bytes, mytasks.o(i.balance_bar))
+<P><STRONG><a name="[38]"></a>balance_bar</STRONG> (Thumb, 208 bytes, Stack size 48 bytes, mytasks.o(i.balance_bar))
 <BR><BR>[Stack]<UL><LI>Max Depth = 208<LI>Call Chain = balance_bar &rArr; ExecuteMode &rArr; mode5 &rArr; mode3 &rArr; PID_Cal &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -880,8 +881,12 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> entry9a.o(.ARM.Collect$$$$0000000B)
 </UL>
-<P><STRONG><a name="[50]"></a>mode0</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, mode.o(i.mode0))
-<BR><BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ExecuteMode
+<P><STRONG><a name="[50]"></a>mode0</STRONG> (Thumb, 58 bytes, Stack size 8 bytes, mode.o(i.mode0))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = mode0 &rArr; SetPWM &rArr; __aeabi_d2uiz
+</UL>
+<BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetPWM
+</UL>
+<BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ExecuteMode
 </UL>
 
 <P><STRONG><a name="[51]"></a>mode1</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, mode.o(i.mode1))

@@ -38,7 +38,8 @@ void SwayUp(void)
 	}
 	SetPWM(-1000);
 	PIDBar.OutputValue =  -1000;
-	while(TIM2->CNT <= (512*11/360))//等待到达45°位置
+//	while(TIM2->CNT <= (512*11/360))//等待到达45°位置
+	while(TIM2->CNT <= (512*14/360))//等待到达45°位置
 		PIDBar.PresentValue = TIM2->CNT;
 	SetPWM(0);
 	PIDBar.OutputValue =  0;
@@ -95,6 +96,14 @@ void ExecuteMode(uint8_t mode)
 //(mode0)（1）摆杆从处于自然下垂状态（摆角0°）开始，驱动电机带动旋转臂作 往复旋转使摆杆摆动，并尽快使摆角达到或超过-60°~ +60°；
 void mode0(void)
 {
+	SetPWM(-50);
+	while(TIM2->CNT<512*60/360)
+		;
+	SetPWM(50);
+	while(TIM2->CNT>0)
+		;
+	while(TIM2->CNT>512*300/360)
+		;
 }
 ///////////////////////////////////////////////END MODE 00000000000/////////////////////////////
 
@@ -182,7 +191,7 @@ void mode4(void)
 //(mode5)（3）在摆杆保持倒立状态的前提下，旋转臂作圆周运动，并尽快使单方向 转过角度达到或超过360°； 
 void mode5(void)
 {
-	TIM4->CNT --;
+	TIM4CNT += 20;
 	mode3();
 }
 /////////////////////////////////////////////END MODE 555555555555555/////////////////////////////
