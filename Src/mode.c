@@ -38,7 +38,7 @@ void SwayUp(void)
 	}
 	SetPWM(-1000);
 	PIDBar.OutputValue =  -1000;
-	while(TIM2->CNT <= (512*15/360))//等待到达45°位置
+	while(TIM2->CNT <= (512*11/360))//等待到达45°位置
 		PIDBar.PresentValue = TIM2->CNT;
 	SetPWM(0);
 	PIDBar.OutputValue =  0;
