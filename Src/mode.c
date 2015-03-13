@@ -30,18 +30,25 @@ int32_t TIM4CNT;
 //摆动杆子，使其达到0位置
 void SwayUp(void)
 {
-	if((TIM2->CNT<512*45/360) ||	(TIM2->CNT<512*315/360))
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+	if((TIM2->CNT>512*45/360) &&	(TIM2->CNT<512*315/360))
+	{
+		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
 		return;//起始角度太大，直接跳出
+	}
 	SetPWM(-1000);
+	PIDBar.OutputValue =  -1000;
 	while(TIM2->CNT <= (512*15/360))//等待到达45°位置
 		PIDBar.PresentValue = TIM2->CNT;
 	SetPWM(0);
-	while(TIM2->CNT <= (512*160/360))//等待杆子甩上来
+	PIDBar.OutputValue =  0;
+	while(TIM2->CNT <= (512*180/360))//等待杆子甩上来
 		PIDBar.PresentValue = TIM2->CNT;
 //	SetPWM(+1000);
 //	while(TIM2->CNT <= (512*120/360))
 		;
 	//杆子已竖直
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
 }
 
 
@@ -134,22 +141,21 @@ void mode3(void)
 	if((TIM2->CNT > (256+128)) || (TIM2->CNT < (256-128)))//不可控
 	{
 		SetPWM(0);
-		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+		LED_OFF;
 		while(1);
 	}
 	
 		
-		temp = TIM4->CNT;
-		TIM4->CNT = 0xffff/2;
-		TIM4CNT += temp-0xffff/2;
+	temp = TIM4->CNT;
+	TIM4->CNT = 0xffff/2;
+	TIM4CNT += temp-0xffff/2;
 	PID_Cal(&PIDDir,TIM4CNT);
 	
-//	tarvforPIDBar = PIDBar.TargetValue;
-//	PIDBar.TargetValue += PIDDir.OutputValue;///////////////////////////////
+	
+	PIDBar.TargetValue = tarvforPIDBar - PIDDir.OutputValue;
 	
 	PID_Cal(&PIDBar,TIM2->CNT);
 	
-//	PIDBar.TargetValue = tarvforPIDBar;
 	SetPWM(PIDBar.OutputValue);
 }
 //////////////////////////////////////////////END MODE 33333333333333/////////////////////////////

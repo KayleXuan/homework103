@@ -109,7 +109,7 @@ int main(void)
 	HAL_TIM_Encoder_Start(&htim4,TIM_CHANNEL_2);
 	
 	
-	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+	LED_OFF;
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */

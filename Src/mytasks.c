@@ -10,24 +10,31 @@ void balance_bar(void *pvParameters)
 	uint8_t mode;
 	xLastWakeTime = xTaskGetTickCount();
 
-	
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
 	
 	vTaskDelayUntil(&xLastWakeTime, 2000/portTICK_RATE_MS);//wait for 2s
 	
 	
 	
 	mode = GetMode();
+	mode = 3;
 	
 	
 	//Config PIDBar
-	PID_Init(&PIDBar, 256, 35, 0, 43, 1000, -1000);
-//	PIDInitStruct.Kp = 35;
-//	PIDInitStruct.Ki = 0.00;
-//	PIDInitStruct.Kd = 43;
-//	PIDInitStruct.TargetValue = 256;
-//	PID_Init(&PIDBar, &PIDInitStruct);
+//	PID_Init(&PIDBar, 256, 35, 0, 43, 1000, -1000);
+	PID_Init(&PIDBar, 256, 10, 1, 80, 1000, -1000);
+	tarvforPIDBar = 256;
+	
+	
+	
+	
+	
+	
+	
+	
+
 	TIM2->CNT = 0;
-//TIM2->CNT = 255;
+
 
 
 
@@ -48,34 +55,29 @@ void balance_bar(void *pvParameters)
 
 
 	//Config PIDDir
-	PID_Init(&PIDDir, 0, 0, 0, 0.002, 5, -5);
-//	PIDInitStruct.Kp = 0;
-//	PIDInitStruct.Ki = 0;
-//	PIDInitStruct.Kd = 0.002;
-//	PIDInitStruct.TargetValue = 0xffff/2;
-//	PID_Init(&PIDDir, &PIDInitStruct);
+//	PID_Init(&PIDDir, 0, 0, 0, 0.002, 5, -5);
+	PID_Init(&PIDDir,  0, 0.1, 0, 0.4, 5, -5);
 	TIM4CNT = 0;
 	TIM4->CNT = 0xffff/2;
 	
 	
 	while(1)
 	{
-		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+		LED_ON;
 		
 		
-		if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12))
-		{
-			SetPWM(0);
-			HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
-			while(1);
-		}
+//		if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12))
+//		{
+//			SetPWM(0);
+//			HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+//			while(1);
+//		}
 		
 
-		mode = 3;
+
 		ExecuteMode(mode);
-		HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
-//		vTaskDelayUntil(&xLastWakeTime, 5/ portTICK_RATE_MS);
-		vTaskDelayUntil(&xLastWakeTime, 2/ portTICK_RATE_MS);
+		LED_OFF;
+		vTaskDelayUntil(&xLastWakeTime, 5/ portTICK_RATE_MS);
 	}
 }
 
