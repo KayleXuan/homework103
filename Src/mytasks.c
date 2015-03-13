@@ -17,7 +17,7 @@ void balance_bar(void *pvParameters)
 	
 	
 	mode = GetMode();
-	mode = 0;
+//	mode = 3;
 	
 	
 	//Config PIDBar
@@ -38,7 +38,7 @@ void balance_bar(void *pvParameters)
 
 
 
-	if((mode != 0)&&(mode != 1))
+	if((mode != 0)&&(mode != 2))
 		SwayUp();
 
 

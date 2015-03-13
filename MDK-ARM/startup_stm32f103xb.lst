@@ -496,12 +496,12 @@ ARM Macro Assembler    Page 8
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend="homework103 configuration\startup_stm32f103xb.d" -o"homework103 c
-onfiguration\startup_stm32f103xb.o" -I..\Inc -I"D:\Users\Xs\Documents\MDK\homew
-ork103 - ¸±±¾\homework103\MDK-ARM\RTE" -ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP
-\1.1.0\Device\Include -ID:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SE
-TA 1" --predefine="__UVISION_VERSION SETA 514" --predefine="STM32F10X_MD SETA 1
-" --list=startup_stm32f103xb.lst ..\Drivers\CMSIS\Device\ST\STM32F1xx\Source\Te
-mplates\arm\startup_stm32f103xb.s
+onfiguration\startup_stm32f103xb.o" -I..\Inc -ID:\Users\Xs\Documents\MDK\homewo
+rk103\homework103\MDK-ARM\RTE -ID:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.1.0\De
+vice\Include -ID:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --p
+redefine="__UVISION_VERSION SETA 514" --predefine="STM32F10X_MD SETA 1" --list=
+startup_stm32f103xb.lst ..\Drivers\CMSIS\Device\ST\STM32F1xx\Source\Templates\a
+rm\startup_stm32f103xb.s
 
 
 

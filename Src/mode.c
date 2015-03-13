@@ -94,16 +94,41 @@ void ExecuteMode(uint8_t mode)
 
 //////////////////////////////////////////////////MODE 00000000000/////////////////////////////
 //(mode0)（1）摆杆从处于自然下垂状态（摆角0°）开始，驱动电机带动旋转臂作 往复旋转使摆杆摆动，并尽快使摆角达到或超过-60°~ +60°；
+
 void mode0(void)
 {
-	SetPWM(-50);
-	while(TIM2->CNT<512*60/360)
-		;
-	SetPWM(50);
-	while(TIM2->CNT>0)
-		;
-	while(TIM2->CNT>512*300/360)
-		;
+//	while(1)
+//	{
+//		SetPWM(-100);
+//		while((TIM2->CNT<512*60/360)||(TIM2->CNT>512*90/360))//等待到达60
+//			;
+//		SetPWM(0);
+//		while(TIM2->CNT>512*60/360)//等待小于60度
+//			;
+//		SetPWM(100);
+//		while(TIM2->CNT>0)
+//			;
+//		while(TIM2->CNT>512*300/360)
+//			;
+//	}
+//	static int16_t countformode0 = 0;
+//	countformode0 ++;
+//	if(countformode0 > 100)
+//		SetPWM(-150);
+//	if(countformode0 > 200)
+//	{
+//		SetPWM(150);
+//		countformode0 = 0;
+//	}
+	TIM4->CNT = 0xffff/2;
+	while(1)
+	{
+		SetPWM(-100);
+		while(TIM4->CNT > 0xffff/2-2000);
+		SetPWM(100);
+		while(TIM4->CNT < 0xffff/2+2000);
+	}
+		
 }
 ///////////////////////////////////////////////END MODE 00000000000/////////////////////////////
 
@@ -117,6 +142,8 @@ void mode0(void)
 //(mode1)（2）从摆杆处于自然下垂状态开始，尽快增大摆杆的摆动幅度，直至完成 圆周运动；   
 void mode1(void)
 {
+	SetPWM(0);
+	while(1);
 }
 ///////////////////////////////////////////////END MODE 11111111111/////////////////////////////
 
@@ -130,6 +157,17 @@ void mode1(void)
 //						启动控制旋转臂使摆杆保持倒立状态时间不少于5s；期间旋转臂的转动角度不大于90°。 
 void mode2(void)
 {
+	static uint8_t ifpressed = 0;
+	while(ifpressed != 1)
+	{
+		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_12) == GPIO_PIN_RESET)
+			ifpressed = 1;
+//////////////////////////////////////////////////
+		///////////////////////////////
+		/////////////////////////////////
+	}
+		
+	mode3();
 }
 ///////////////////////////////////////////////END MODE 2222222222/////////////////////////////
 
